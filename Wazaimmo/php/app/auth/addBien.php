@@ -1,5 +1,5 @@
 <?php 
-include("connexion.php");
+require_once '../../app/auth/connexion.php';
 $db=connect();
 
 //dans ce fichier, nous récupérons les informations pour réaliser la requête de modification : UPDATE

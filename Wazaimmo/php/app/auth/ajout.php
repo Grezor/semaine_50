@@ -1,19 +1,26 @@
 <?php
-include("header.php");
-include("connexion.php");
+require_once '../../includes/header.php';
+require_once './connexion.php';
 $db=connect();
-$resultatBien = $db->query('Select bien_id,bien_libelle from waz_bien');
-$resultatOpt=$db->query('Select opt_id,opt_libelle from options');
+$resultatBien = $db->query('SELECT bien_id, bien_libelle FROM waz_bien');
+$resultatOpt=$db->query('SELECT opt_id, opt_libelle FROM options');
 ?>
 
 <div class="m-3"align="center">
 
+<?php 
+if (isset($_SESSION['flash'])) : ?>
+    <?php foreach ($_SESSION['flash'] as $type => $message) : ?>
+        <div class="alert alert-<?= $type; ?>">
+            <?= $message ?>
+        </div>
+    <?php endforeach ?>
+<?php unset($_SESSION['flash']);
+endif ?>
 
 
 
-
-
-<form action ="scriptajout.php" method="post" enctype="multipart/form-data">
+<form action ="../auth/addBien.php" method="post" enctype="multipart/form-data">
 Fichier (tous formats | max. 1 Mo) :
 <br><input type="file" name="fichier"> 
 <input type="hidden" name="MAX_FILE_SIZE" value="12345" />
@@ -40,7 +47,7 @@ if(isset($_POST["submit"]))
 ?>
 
 
-                                                                            <!-- <input type="submit" value="Télécharger" class ="btn btn-success"><br> -->
+<!-- <input type="submit" value="Télécharger" class ="btn btn-success"><br> -->
 
 
                             <!-- TYPE D'OFFRE -->
@@ -252,7 +259,6 @@ function verif(){
 
 
 
-include("footer.php");
+require_once '../../includes/footer.php';
 
 ?>
-

@@ -1,8 +1,7 @@
 <?php 
-    include("header.php");
-    include("connexion.php");
-
-    $db=connect();
+require_once './includes/header.php';
+require_once './app/auth/connexion.php';
+$db=connect();
 ?>
 
 <?php
@@ -11,7 +10,7 @@ $requete = "SELECT * FROM annonces";
 $result = $db->query($requete);?>
 
 <div><br><br>
-        <a href="ajout.php" title="lien vers le formulaire d'ajout">
+        <a href="./app/auth/ajout.php" title="lien vers le formulaire d'ajout">
             <button type="submit" class="col-12 bbtn btn-dark p-3"><strong>Ajouter un bien à vendre/louer</strong>
             </button>
         </a><br>
@@ -106,6 +105,7 @@ $result = $db->query($requete);?>
 
 
 <?php
-    include("footer.php");
+require_once './includes/footer.php';
+
     
 ?>
