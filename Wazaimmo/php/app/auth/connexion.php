@@ -1,7 +1,7 @@
 <?php
 
 
-function connect () {
+function connect() {
 
 //vérifie si on désire se diriger vers le serveur dev.amorce.org ou bien vers le serveur local
 //dans ce cas, host,login, password et BDD sont différents d'un serveur à l'autre
@@ -13,11 +13,7 @@ if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
         $login= "etienneo";     // Votre loggin d'accès au serveur de BDD 
         $password="oe20112";    // Le Password pour vous identifier auprès du serveur
         $base = "etienneo";    // La BDD avec laquelle vous voulez travailler 
-}
-
-
-else
-{
+}else{
         // Paramètres de connexion serveur local
         $host ="localhost";
         $login="root";     // Votre loggin d'accès au serveur de BDD 
@@ -27,8 +23,16 @@ else
 
 try{        
         //$db = new PDO('mysql:host=localhost;charset=utf8;dbname=hotel', 'root', '');
-        $db = new PDO("mysql:host=".$host.";charset=utf8;dbname=".$base."", $login, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db = new PDO("mysql:host=".$host.";charset=utf8;dbname=".$base."", $login, $password, [
+                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8',
+                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+        ]);
+
+
+        //  PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8',
+        //  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        //  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
 }
 
 catch (Exception $e) {

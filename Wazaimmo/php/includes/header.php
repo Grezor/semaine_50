@@ -1,6 +1,6 @@
+
 <!DOCTYPE html>
 <html lang='fr'>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,10 +23,10 @@
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="Accueil.php"> Accueil</a>
+                        <a class="nav-link" href="/php/index.php"> Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="a_propos.php" title="Tableau">À propos</a>
+                        <a class="nav-link" href="app/pages/a_propos.php" title="Tableau">À propos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.php" title="Contact">Contact</a>
@@ -37,12 +37,11 @@
                 <div class="form-inline ">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="sinscrire.php" title="inscription">S'inscrire</a>
+                            <a class="nav-link" href="./app/auth/register.php" title="inscription">S'inscrire</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="seconnecter.php" title="connection">Se connecter</a>
+                            <a class="nav-link" href="../../php/app/auth/connexion.php" title="connection">Se connecter</a>
                         </li>
-
                 </div>
             </form>
         </nav>

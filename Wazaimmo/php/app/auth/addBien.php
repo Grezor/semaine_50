@@ -1,125 +1,81 @@
+  
 <?php 
-require_once '../../app/auth/connexion.php';
-$db=connect();
+
+
 
 //dans ce fichier, nous récupérons les informations pour réaliser la requête de modification : UPDATE
 
 //récupération des informations passées en POST, nécessaires à la modification
-
-
-if ($_POST['offer'] == "achat") 
-{
-    $reference_offerType = 1;
+function sessionStart() {
+    if(session_status() === PHP_SESSION_NONE){
+        session_start();
+    }
 }
 
-else if ($_POST['offer'] == "location")
-{
-    $reference_offerType = 1;
+
+if (!empty($_POST)) {
+    $errors = [];
+    require_once "../../app/auth/connexion.php";
+    if (empty($_POST['offre'])) {
+		$errors['offre'] = "Votre offre n'est pas valide";
+    }
+    if (empty($_POST['typeBien'])) {
+		$errors['typeBien'] = "Votre typeBien n'est pas valide";
+    }
+    if (empty($_POST['nbPiece'])) {
+		$errors['nbPiece'] = "Votre nbPiece n'est pas valide";
+    }
+    if (empty($_POST['refs'])) {
+		$errors['refs'] = "Votre refs n'est pas valide";
+    }
+    if (empty($_POST['title'])) {
+		$errors['title'] = "Votre title n'est pas valide";
+    }
+    if (empty($_POST['description'])) {
+		$errors['description'] = "Votre description n'est pas valide";
+    }
+    if (empty($_POST['options'])) {
+		$errors['options'] = "Votre options n'est pas valide";
+    }
+    if (empty($_POST['localisation'])) {
+		$errors['localisation'] = "Votre localisation n'est pas valide";
+    }
+    if (empty($_POST['surfaces'])) {
+		$errors['surfaces'] = "Votre surfaces n'est pas valide";
+    }
+    if (empty($_POST['surfaceTotal'])) {
+		$errors['prisurfaceTotalce'] = "Votre surfaceTotal n'est pas valide";
+    }
+    if (empty($_POST['prix'])) {
+		$errors['prix'] = "Votre prix n'est pas valide";
+    }
+    if (empty($_POST['dianostic'])) {
+		$errors['dianostic'] = "Votre dianostic n'est pas valide";
+    }
+    
+    if (empty($errors)) {
+
+    $requete = $db->prepare("INSERT INTO annonces (an_ref,an_titre,an_description,an_local,an_surf_hab,an_surf_tot,an_prix,an_pieces,an_diagnostic,an_type, an_offre, an_d_ajout) 
+    VALUES (:an_ref,:an_titre,:an_description,:an_local,:an_surf_hab,:an_surf_tot,:an_prix,:an_pieces,:an_diagnostic, :an_type, :an_offre, now())");
+
+    $requete->execute([
+        ':an_offre' => (int) $_POST['offre'],
+        ':an_type' => $_POST['typeBien'],
+        ':an_ref' => $_POST['refs'],
+        ':an_titre' => $_POST['title'],
+        ':an_description' => $_POST['description'],
+        ':an_local' => $_POST['localisation'],
+        ':an_surf_hab' => $_POST['surfaces'],
+        ':an_surf_tot' => $_POST['surfaceTotal'],
+        ':an_prix' => $_POST['prix'],
+        ':an_pieces' => $_POST['nbPiece'],
+        ':an_diagnostic' => $_POST['dianostic'],
+    ]);
+    $_SESSION['flash']['success'] = 'produit cree';
+    header("Location: index.php");
+    exit();
+
+    }
+
+
 }
-
- else if ($_POST['offer'] == "viager")
-{
-    $reference_offerType = 1;
-} 
-
-else  $reference_offerType = NULL;
-
-
-if ($_POST['nbPiece'] == "1") 
-{
-    $reference_CheckBox2 = 1;
-}
-else if ($_POST['nbPiece'] == "2")
-{
-    $reference_CheckBox2 = 1;
-} else if ($_POST['nbPiece'] == "3")
-{
-    $reference_CheckBox2 = 1;
-} else if ($_POST['nbPiece'] == "4")
-{
-    $reference_CheckBox2 = 1;
-} else if ($_POST['nbPiece'] == "5")
-{
-    $reference_CheckBox2 = 1;
-} else if ($_POST['nbPiece'] == "6")
-{
-    $reference_CheckBox2 = 1;
-} else if ($_POST['nbPiece'] == "plusDe6")
-{
-    $reference_CheckBox2 = 1;
-} else  $reference_CheckBox2 = NULL;
-
-
-$reference_ref=$_POST['Refs'];
-$reference_titre=$_POST['title'];
-$reference_description=$_POST['Descript'];
-$reference_localisation=$_POST['locate'];
-$reference_surfaceHabitable=$_POST['Surfaces'];
-$reference_surfaceTotale=$_POST['SurfacesTotal'];
-$reference_prix=$_POST['NamePrice'];
-$reference_offerType=$_POST['offer'];
-$reference_CheckBox2=$_POST['nbPiece'];
-
-if ($_POST['Diagnos'] == "A") 
-{
-    $reference_CheckBox3 = 1;
-}
-else if ($_POST['Diagnos'] == "B")
-{
-    $reference_CheckBox3 = 1;
-} else if ($_POST['Diagnos'] == "C")
-{
-    $reference_CheckBox3 = 1;
-} else if ($_POST['Diagnos'] == "D")
-{
-    $reference_CheckBox3 = 1;
-} else if ($_POST['Diagnos'] == "E")
-{
-    $reference_CheckBox3 = 1;
-} else if ($_POST['Diagnos'] == "F")
-{
-    $reference_CheckBox3 = 1;
-} else if ($_POST['Diagnos'] == "G")
-{
-    $reference_CheckBox3 = 1;
-} else if ($_POST['Diagnos'] == "Vierge")
-{
-    $reference_CheckBox3 = 1;
-} else  $reference_CheckBox3 = NULL;
-
-
-if ($_FILES['fichier']['error'] > 0) $erreur = "Erreur lors du transfert";
-if ($_FILES['icone']['size'] > $maxsize) $erreur = "Le fichier est trop gros";
-
-
-
-
-$requete = $db->prepare("INSERT INTO annonces (an_ref,an_titre,an_description,an_local, an_surf_hab,an_surf_tot,an_prix,an_offre,an_pieces, an_diagnostic) 
-VALUES (:an_ref,:an_titre,:an_description,:an_local,:an_surf_hab,:an_surf_tot,:an_prix,:an_offre,:an_pieces,:an_diagnostic)");
-
-
-
-$requete->bindValue(':an_ref', $reference_ref, PDO::PARAM_STR);
-$requete->bindValue(':an_titre', $reference_titre, PDO::PARAM_STR);
-$requete->bindValue(':an_description', $reference_description, PDO::PARAM_STR);
-$requete->bindValue(':an_local', $reference_localisation, PDO::PARAM_STR);
-$requete->bindValue(':an_surf_hab', $reference_surfaceHabitable, PDO::PARAM_INT);
-$requete->bindValue(':an_surf_tot', $reference_surfaceTotale, PDO::PARAM_INT);
-$requete->bindValue(':an_prix', $reference_prix, PDO::PARAM_INT);
-$requete->bindValue(':an_offre', $reference_offerType, PDO::PARAM_BOOL);
-$requete->bindValue(':an_pieces', $reference_CheckBox2, PDO::PARAM_BOOL);
-$requete->bindValue(':an_diagnostic', $reference_CheckBox3, PDO::PARAM_BOOL);
-
-
-
- $requete->execute();
-
-//libère la connection au serveur de BDD
-$requete->closeCursor();
-
-//redirection vers la page index.php 
-
-
-header("Location: accueil.php");
-
-?>

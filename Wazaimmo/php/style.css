@@ -3,11 +3,9 @@
     text-align: center;
 }
 
-.card{
-   
-    margin: auto;
+.card {
+    min-height: 200px;
 }
-
 
 #collapsibleNavbardark
 {
